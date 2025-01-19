@@ -1,30 +1,36 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
+
+  
   const [count, setCount] = useState(0)
+  const [jwt, setJwt] = useState("");
 
-  const requestBody = {
-    "username": "trevor",
-    "password": "jonsnow"
-  }
-
-  fetch('api/auth/login',{
-    headers : {
-      "Content-Type": "application/json"
-    },
-    method : "post",
-    body: JSON.stringify(requestBody)
-  })
-  .then((response) => Promise.all([response.json(), response.headers]))
-  .then(([body, headers])=>{
-    const authValue = headers.get("authorization");
-    console.log(authValue);
-    console.log(body);
-  });
-
+  useEffect(() => {
+    const requestBody = {
+      "username": "trevor",
+      "password": "jonsnow"
+    }
+  
+    fetch('api/auth/login',{
+      headers : {
+        "Content-Type": "application/json"
+      },
+      method : "post",
+      body: JSON.stringify(requestBody)
+    })
+    .then((response) => Promise.all([response.json(), response.headers]))
+    .then(([body, headers])=>{
+      setJwt(headers.get("authorization"));
+    });  
+  }, []);
+  
+  useEffect(() =>{
+    console.log(`JWT is: ${jwt}` );
+  },[jwt]);
 
   return (
     <>
@@ -48,6 +54,9 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+
+      <h1>Hello World</h1>
+      <div>JWT value is {jwt}</div>
     </>
   )
 }
