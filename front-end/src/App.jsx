@@ -2,30 +2,37 @@ import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import { useLocalState } from './util/useLocalStorage'
+import { Route } from 'react-router-dom'
+import Dashboard from './Dashboard'
+import homePage from './Homepage'
 
 function App() {
 
   
   const [count, setCount] = useState(0)
-  const [jwt, setJwt] = useState("");
+  const [jwt, setJwt] = useLocalState("", "jwt");
 
   useEffect(() => {
-    const requestBody = {
-      "username": "trevor",
-      "password": "jonsnow"
+
+    if(!jwt){
+      const requestBody = {
+        "username": "jon",
+        "password": "jonsnow"
+      }
+    
+      fetch('api/auth/login',{
+        headers : {
+          "Content-Type": "application/json"
+        },
+        method : "post",
+        body: JSON.stringify(requestBody)
+      })
+      .then((response) => Promise.all([response.json(), response.headers]))
+      .then(([body, headers])=>{
+        setJwt(headers.get("authorization"));
+      });
     }
-  
-    fetch('api/auth/login',{
-      headers : {
-        "Content-Type": "application/json"
-      },
-      method : "post",
-      body: JSON.stringify(requestBody)
-    })
-    .then((response) => Promise.all([response.json(), response.headers]))
-    .then(([body, headers])=>{
-      setJwt(headers.get("authorization"));
-    });  
   }, []);
   
   useEffect(() =>{
@@ -33,31 +40,10 @@ function App() {
   },[jwt]);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-
-      <h1>Hello World</h1>
-      <div>JWT value is {jwt}</div>
-    </>
+    <Routes>
+      <Route path='/dashboard' element={<Dashboard/>} />
+      <Route path='/' element={<homePage/>}/>
+    </Routes>
   )
 }
 
