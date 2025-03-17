@@ -42,6 +42,10 @@ public class User implements UserDetails {
         return roles;
     }
 
+    public void setAuthorities(List<Authority> authorities){
+        this.authorities = authorities;
+    }
+
     @Override
     public boolean isAccountNonExpired() {
         return UserDetails.super.isAccountNonExpired();
