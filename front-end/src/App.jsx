@@ -6,6 +6,7 @@ import { useLocalState } from './util/useLocalStorage'
 import { Route } from 'react-router-dom'
 import Dashboard from './Dashboard'
 import Homepage from './Homepage'
+import assignmentsView from './Assignments/assignmentsView'
 import PrivateRoute from './PrivateRoute/PrivateRoute'
 import Login from './Login/login'
 
@@ -23,6 +24,7 @@ function App() {
         </PrivateRoute>
         } 
       />
+      <Route path='/assignment/:id' element={<PrivateRoute><assignmentsView/></PrivateRoute>}/>
       <Route path='login' element={<Login/>}/>
       <Route path='/' element={<homePage/>}/>
     </Routes>
