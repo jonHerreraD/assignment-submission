@@ -37,24 +37,33 @@ const Login = () => {
     return (
         <>
 
-          <Container>
-            <Form.Group className='mb-3' controlId='formBasicEmail'>
-              
-                <Form.Label htmlFor="username" className='fs-4'>Username</Form.Label>
-                <Form.Control type="email"id='username' size='lg' value={username} onChange={(event) => setUsername(event.target.value)}/>
-              
-            </Form.Group>
-            <Form.Group className='mb-3' controlId='formBasicEmail'>
-              
-                <Form.Label htmlFor="password" className='fs-4'>Password</Form.Label>
-                <Form.Control type="password" id='password' size='lg' value={password} onChange={(event) => setPassword(event.target.value)} />
-              
-            </Form.Group>
+          <Container className='mt-5'>
             <Row>
-              <Col className='mt-3'>
-              <div>
+              <Col md="8" lg="6">
+              <Form.Group className='mb-3' controlId='username'>
+              
+                <Form.Label  className='fs-4'>Username</Form.Label>
+                <Form.Control type="email" size='lg' value={username} onChange={(event) => setUsername(event.target.value)}/>
+            
+              </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col md="8" lg="6">
+              <Form.Group className='mb-3' controlId='password'>
+              
+                <Form.Label  className='fs-4'>Password</Form.Label>
+                <Form.Control type="password" size='lg' value={password} onChange={(event) => setPassword(event.target.value)} />
+            
+              </Form.Group>
+              </Col>
+            </Row>
+            
+            <Row>
+              <Col md="8" lg="6"className='mt-3 d-flex flex-column gap-5 flex-md-row justify-content-md-between'>
+              
                 <Button id='submit' type='button' size='lg' onClick={() => sendLoginRequest()}>Login</Button>
-              </div>
+                <Button   variant='secondary' type='button' size='lg' onClick={() => {window.location.href = "/";}}>Exit</Button>
               </Col>
             </Row>
            
