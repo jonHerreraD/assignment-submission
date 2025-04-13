@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import ajax from '../Services/fetchService';
 
 
 
@@ -8,32 +9,13 @@ const Dashboard = () => {
     const [assignments, setAssignments] = useState(null);
 
     useEffect(() => {
-        fetch("api/assignments",{
-            headers: {
-                "content-type": "application/json",
-                Authorization : `Bearer ${jwt}`, 
-            },
-            method: "GET",
-        }).then((response) =>{
-            if(response.status === 200) return response.json();
-        })
-        .then((assignmentsData) => {
+        ajax("api/assignments",jwt,"GET").then((assignmentsData) => {
             setAssignments(assignmentsData);
         });
     },[]);
 
     function createAssignment(){
-        fetch("/assignments", {
-            headers: {
-                "content-type": "application/json",
-                Authorization : `Bearer ${jwt}`,
-            },
-            method: "POST",
-        })
-        .then((response) => {
-            if (response.status === 200) return response.json();
-        })
-        .then((assignment) => {
+        ajax("api/assignments",jwt,"POST").then((assignment) => {
             window.location.href = `/assignments/${assignment.id}`;
         });
     }
@@ -41,7 +23,7 @@ const Dashboard = () => {
     return (
         <div style={{margin: "2em"}}>
            {assignments ? assignments.map(assignment =>
-           <div>
+           <div key={assignment.id}>
                 <Link to={`/assignments${assignment.id}`}>
                     Assignment ID: {assignment.id}
                 </Link>
