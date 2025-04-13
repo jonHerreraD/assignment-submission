@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useLocalState } from '../util/useLocalStorage';
+import {Container, Row, Col, Button, Form} from "react-bootstrap"
 
 const Login = () => {
     const [username, setUsername] =useState("");
     const [password, setPassword] =useState("");
-    const [jwt,setJwt] = useLocalState("",jwt);
+    const [jwt,setJwt] = useLocalState("","jwt");
     function sendLoginRequest(){
       const requestBody = {
         "username": username,
         "password": password,
-      }
+      };
     
       fetch('api/auth/login',{
         headers : {
@@ -35,17 +36,32 @@ const Login = () => {
     }
     return (
         <>
-           <div>
-            <label htmlFor="username">Username</label>
-            <input type="email"id='username'value={username} onChange={(event) => setUsername(event.target.value)}/>
-           </div> 
-           <div>
-            <label htmlFor="password">Password</label>
-            <input type="password" id='password' value={password} onChange={(event) => setPassword(event.target.value)} />
-           </div>
-           <div>
-                <button id='submit' type='button' onClick={() => sendLoginRequest()}>Login</button>
-           </div>
+
+          <Container>
+            <Form.Group className='mb-3' controlId='formBasicEmail'>
+              
+                <Form.Label htmlFor="username" className='fs-4'>Username</Form.Label>
+                <Form.Control type="email"id='username' size='lg' value={username} onChange={(event) => setUsername(event.target.value)}/>
+              
+            </Form.Group>
+            <Form.Group className='mb-3' controlId='formBasicEmail'>
+              
+                <Form.Label htmlFor="password" className='fs-4'>Password</Form.Label>
+                <Form.Control type="password" id='password' size='lg' value={password} onChange={(event) => setPassword(event.target.value)} />
+              
+            </Form.Group>
+            <Row>
+              <Col className='mt-3'>
+              <div>
+                <Button id='submit' type='button' size='lg' onClick={() => sendLoginRequest()}>Login</Button>
+              </div>
+              </Col>
+            </Row>
+           
+           
+          </Container>
+
+           
         </>
     );
 };
