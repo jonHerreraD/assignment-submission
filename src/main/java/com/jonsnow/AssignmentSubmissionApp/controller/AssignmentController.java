@@ -2,6 +2,7 @@ package com.jonsnow.AssignmentSubmissionApp.controller;
 
 import com.jonsnow.AssignmentSubmissionApp.domain.Assignment;
 import com.jonsnow.AssignmentSubmissionApp.domain.User;
+import com.jonsnow.AssignmentSubmissionApp.dto.AssignmentResponseDto;
 import com.jonsnow.AssignmentSubmissionApp.service.AssignmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class AssignmentController {
 
     @PostMapping("")
     public ResponseEntity<?> createAssignment(@AuthenticationPrincipal User user){
-        Assignment newAssignment = assignmentService.save(user);
+        Assignment newAssignment = assignmentService.create(user);
         return ResponseEntity.ok(newAssignment);
     }
 
@@ -33,7 +34,7 @@ public class AssignmentController {
     @GetMapping("{assignmentId}")
     public ResponseEntity<?> getAssignment(@PathVariable Long assignmentId, @AuthenticationPrincipal User user){
         Optional<Assignment> assignmentOpt = assignmentService.findById(assignmentId);
-        return ResponseEntity.ok(assignmentOpt.orElse(new Assignment()));
+        return ResponseEntity.ok(new AssignmentResponseDto(assignmentOpt.orElse(new Assignment())));
     }
 
     @PutMapping("{assignmentId}")

@@ -10,6 +10,8 @@ const assignmentsView = () => {
         branch: "",
         githubUrl: "",
     });
+
+    const [assignmentEnums, setAssignmentEnums] = useState([]);
     
     function updateAssignment(prop, value){
         const newAssignment = {...assignment};
@@ -24,12 +26,14 @@ const assignmentsView = () => {
     }
 
     useEffect(() => {
-        ajax(`/api/assignments/${assignmentId}`,jwt,"GET").then((assignmentData) => {
+        ajax(`/api/assignments/${assignmentId}`,jwt,"GET").then((assignmentResponse) => {
+            let assignmentData = assignmentResponse.assignment
             if(assignmentData.branch === null)assignment.branch = "";
             if(assignmentData.githubUrl === null)assignment.githubUrl = "";
             setAssignment(assignmentData);
+            setAssignmentEnums(assignmentResponse.assignmentEnums);
         });
-    },[])
+    },[]);
     
     return (
         <Container className='mt-5'>
@@ -57,9 +61,9 @@ const assignmentsView = () => {
                             variant={"info"}
                            
                         >
-                        {['1','2','3','4','5','6'].map((assignmentNum) => (
-                            <Dropdown.Item eventKey={assignmentNum}>
-                                {assignmentNum}
+                        {assignmentEnums.map((assignmentEnum) => (
+                            <Dropdown.Item eventKey={assignmentEnum.assignmentNum}>
+                                {assignmentEnum.assignmentNum}
                             </Dropdown.Item>
                         ))}
                             
